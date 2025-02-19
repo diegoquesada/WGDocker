@@ -1,0 +1,66 @@
+services:
+  # mqtt5 eclipse-mosquitto
+  mqtt5:
+    image: eclipse-mosquitto
+    container_name: mqtt5
+    ports:
+      - "1883:1883" #default mqtt port
+      - "9001:9001" #default mqtt port for websockets
+    volumes:
+      - ./mqtt5/config:/mosquitto/config:rw
+      - ./mqtt5/data:/mosquitto/data:rw
+      - ./mqtt5/log:/mosquitto/log:rw
+    restart: unless-stopped
+
+  prom5:
+    image: prom/prometheus
+    container_name: prom5
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prom_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    restart: unless-stopped
+    depends_on:
+      - exporter5
+
+  graf5:
+    image: grafana/grafana
+    container_name: graf5
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/datasources
+      - grafana_storage:/var/lib/grafana
+    depends_on:
+      - prom5
+
+  exporter5:
+    build: ./mqtt-exporter
+    container_name: exporter5
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    environment:
+      - PY_MQTT_USER=${PY_MQTT_USER}
+      - PY_MQTT_PWD=${PY_MQTT_PWD}
+    depends_on:
+      - mqtt5
+
+volumes:
+  config:
+  data:
+  log:
+  prom_data:
+  grafana_storage: {}
+
+networks:
+  default:
+    name: mqtt5-network
+
