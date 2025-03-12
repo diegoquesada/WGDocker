@@ -1,0 +1,104 @@
+{
+	"title": "Wio Greenhouse",
+	"schemaVersion": 40,
+	"refresh": "15m",
+	"version": 8,
+	"time": { "from": "now-14h", "to": "now" },
+	"timezone": "browser",
+	"editable": true,
+	"panels": [
+		{
+			"collapsed": false,
+			"gridPos": { "x": 0, "y": 0, "w": 24, "h": 1 },
+			"id": 6,
+			"panels": [],
+			"title": "Greenhouse",
+			"type": "row"
+		},
+		{
+			"title": "Temperature",
+			"type": "timeseries",
+			"fieldConfig": {
+				"unit": "celsius"
+			},
+			"targets": [
+				{
+					"expr": "wio_temperature{serial=\"c29e0bc7\"}",
+					"legendFormat": "{{serial}}",
+					"range": true,
+					"refId": "A",
+					"datasource": { "type": "prometheus" }
+				},
+				{
+					"expr": "wio_temperature{serial=\"c29e0bc7\"} offset 1d",
+					"legendFormat": "{{serial}} yesterday",
+					"range": true,
+					"refId": "B",
+					"datasource": { "type": "prometheus" }
+				}
+			],
+			"gridPos": { "x": 0, "y": 1, "w": 8, "h": 8 },
+			"id": 1,
+			"datasource": {
+				"type": "prometheus"
+			}
+		},
+		{
+			"title": "Humidity",
+			"type": "timeseries",
+			"fieldConfig": {
+				"unit": "humidity"
+			},
+			"targets": [
+				{
+					"expr": "wio_humidity{serial=\"c29e0bc7\"}",
+					"legendFormat": "{{serial}}",
+					"range": true,
+					"refId": "A",
+					"datasource": { "type": "prometheus" }
+				},
+				{
+					"expr": "wio_humidity{serial=\"c29e0bc7\"} offset 1d",
+					"legendFormat": "{{serial}} yesterday",
+					"range": true,
+					"refId": "B",
+					"datasource": { "type": "prometheus" }
+				}
+			],
+			"gridPos": { "x": 8, "y": 1, "w": 8, "h": 8 },
+			"id": 2,
+			"datasource": {
+				"type": "prometheus"
+			}
+		},
+		{
+			"title": "Lux",
+			"type": "timeseries",
+			"fieldConfig": {
+				"unit": "lux"
+			},
+			"targets": [
+				{
+					"expr": "wio_lux{serial=\"c29e0bc7\"}",
+					"legendFormat": "{{serial}}",
+					"range": true,
+					"refId": "A",
+					"datasource": { "type": "prometheus" }
+				},
+				{
+					"expr": "wio_lux{serial=\"c29e0bc7\"} offset 1d",
+					"legendFormat": "{{serial}} yesterday",
+					"range": true,
+					"refId": "B",
+					"datasource": { "type": "prometheus" }
+				}
+			],
+			"gridPos": { "x": 16, "y": 1, "w": 8, "h": 8 },
+			"id": 3,
+			"datasource": {
+				"type": "prometheus"
+			}
+		}
+	]
+}
+
