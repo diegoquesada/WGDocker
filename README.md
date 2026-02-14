@@ -14,6 +14,17 @@ C --> D["prometheus"]
 D --> E["grafana"]
 ```
 
+## Configuration
+1. Ensure the directories under mqtt5 are owned by user/group 1883:1883:
+```
+sudo chown -R 1883:1883 mqtt5/config
+sudo chown -R 1883:1883 mqtt5/data
+sudo chown -R 1883:1883 mqtt5/log
+```
+2. Generate and copy a valid pwfile to mqtt5/config
+3. Generate and copy the .env file containing environment variable definitions
+4. docker compose up
+
 ## Mosquitto
 
 Topics published by WioLink have this format:
