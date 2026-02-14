@@ -6,11 +6,11 @@
 # (c) 2025 Diego Quesada
 # 
 
-import paho.mqtt.client as mqtt
 import json
 import time
 import os
 from prometheus_client import start_http_server, Gauge
+import paho.mqtt.client as mqtt
 
 # Define the Prometheus metrics we will send
 temperature_gauge = Gauge('wio_temperature', 'Temperature received from WioLink', ['serial'])
@@ -32,7 +32,7 @@ def on_connect(client, userdata, flags, reason_code, properties):
     else:
         print(f"mqtt-exporter: Failed to connect, error {reason_code}")
 
-def on_disconnect(client, userdata, reason_code):
+def on_disconnect(client, userdata, disconnect_flags, reason_code, properties):
     print("mqtt-exporter: Disconnected from MQTT broker, attempting to reconnect.")
     for attempt in range(1,11): # Retry up to 10 times
         try:
